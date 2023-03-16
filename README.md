@@ -335,13 +335,7 @@ curl -X GET \
 
 ### Running the application locally
 1. Activate virtual environment `source .venv/bin/activate`
-2. setup .env file with CONSENT_STORE_NAME, USER_CONSENT_ARTIFECT_ID & HEALTHCARE_GCPAPI_BASE_URL details. Refer example.env file E.g.
-```
-CONSENT_STORE_NAME='projects/<PROJECT_ID>/locations/<LOCATION>/datasets/<FHIR_STORE_ID>/consentStores/<CONSENT_STORE_ID>'
-USER_CONSENT_ARTIFECT_ID='<CONSENT_ARTIFACT_ID>'
-HEALTHCARE_GCPAPI_BASE_URL='https://healthcare.googleapis.com/v1/'
-SECRET_KEY='<DJANGO_SECRET_KEY>'
-```
+2. setup .env file with below details. Refer example.env file. You can clone example.env to create .env file within cmapi directory.
 3. Run the Django web application `./manage.py runserver`
 
 
