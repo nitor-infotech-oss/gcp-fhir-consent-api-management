@@ -1,0 +1,293 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+  <script>
+    var spinnerCounter = 0;
+    setInterval(function() {
+        var frames = 19;
+        var frameWidth = 30;
+        var offset = spinnerCounter * -frameWidth;
+        document.getElementById("spinner").style.backgroundPosition = 0 + "px" + " " + offset + "px";
+        spinnerCounter++;
+        if (spinnerCounter>=frames) spinnerCounter = 0;
+    }, 60);
+
+    function revealButton() {
+      // Get references to the existing and hidden buttons
+      const existingButton = document.getElementById("checkConsent");
+      const existingButton2 = document.getElementById("clearConsent");
+      const hiddenButton = document.getElementById("requestConsent");
+      const hiddenButton2 = document.getElementById("backConsent");
+    
+      // Hide the existing button
+      existingButton.style.display = "none";
+      existingButton2.style.display = "none";
+    
+      // Show the hidden button
+      hiddenButton.style.display = "inline";
+      hiddenButton2.style.display = "inline";
+    }
+
+    var seconds = 120;
+    var timer = setInterval(function() {
+      if (seconds <= 0) {
+        clearInterval(timer);
+        document.getElementById("data-container").innerHTML = "<p>The consent approval has expired!<br>Please request for the consent, if required.</p>";
+        seconds = 0;
+      }
+
+      var minutes = Math.floor(seconds / 60);
+      var remainingSeconds = seconds % 60;
+
+      // Format the time remaining as mm:ss
+      var displayTime = (minutes < 10 ? "0" : "") + minutes + " Minutes  " + (remainingSeconds < 10 ? "0" : "") + remainingSeconds.toFixed(0) + " Seconds";
+
+      document.getElementById("counter").innerHTML = displayTime;
+
+      seconds--;
+    }, 1000);
+  
+    $(function() {
+      $('.popup-link').click(function(e) {
+        e.preventDefault();
+        $('#spinner').show();
+        var url = $(this).data('url');
+        $.ajax({
+          url: url,
+          dataType: 'json',
+          success: function(resources) {
+            if (resources.error == true) {
+              alert('Error Occured: ' + resources.message);
+            } else {
+              const resourceData = resources.data;
+              const consentData = resourceData.consent_data;
+              const patientData = resourceData.patient_data;
+              console.log(consentData);
+              console.log(patientData);
+              // Set consent expire timer
+              var now = new Date();
+              expireTime = new Date(consentData.expireTime);
+              if (now >= expireTime) {
+                seconds = 0
+              } else {
+                seconds = (expireTime.getTime() - now.getTime())/1000
+              }
+              // Extract details
+              let patientDetails;
+              let encounterDetails;
+              let observationDetails;
+              let intoleranceDetails;
+              for (const entry of patientData){
+                let resource = entry.resource;
+                console.log(resource);
+                // Patient details
+                if (resource.resourceType == "Patient") {
+                  patientDetails = {
+                    'name': resource.name[0].given[0] + ' ' + resource.name[0].family,
+                    'gender': resource.gender,
+                    'birthDate': resource.birthDate,
+                    'lastUpdated': resource.meta.lastUpdated,
+                  }
+                }
+                // Encounter Details
+                if (resource.resourceType == "Encounter") {
+                  encounterDetails = {
+                    'text': resource.reasonCode[0].text,
+                    'status': resource.status,
+                    'lastUpdated': resource.meta.lastUpdated,
+                  }
+                }
+                // Observation Details
+                if (resource.resourceType == "Observation") {
+                  observationDetails = {
+                    'valueQuantity': resource.valueQuantity.value+ ' ' + resource.valueQuantity.unit,
+                    'status': resource.status,
+                    'lastUpdated': resource.meta.lastUpdated,
+                  }
+                }
+                // Intolerance Details
+                if (resource.resourceType == "AllergyIntolerance") {
+                  intoleranceDetails = {
+                    'category': resource.category[0],
+                    'reaction': resource.reaction[0].manifestation[0].text,
+                    'text': resource.code.text,
+                    'lastUpdated': resource.meta.lastUpdated,
+                  }
+                }
+              }
+              var patientDetailsEl = ''
+              if (!!patientDetails) {
+                patientDetailsEl += '<tr><td>Patient Name</td><td>' + patientDetails.name + '</td></tr>' +
+                '<tr><td>Patient Gender</td><td>' + patientDetails.gender + '</td></tr>' +
+                '<tr><td>Patient Birthdate</td><td>' + patientDetails.birthDate + '</td></tr>'
+              } 
+              var encounterDetailsEl = ''
+              if (!!encounterDetails) {
+                encounterDetailsEl += '<tr><td>Encounter Detail</td><td>' + encounterDetails.text + '</td></tr>' +
+                '<tr><td>Encounter Status</td><td>' + encounterDetails.status + '</td></tr>' +
+                '<tr><td>Encounter Last Updated</td><td>' + encounterDetails.lastUpdated + '</td></tr>'
+              }
+              var observationDetailsEl = ''
+              if (!!observationDetails) {
+                observationDetailsEl += '<tr><td>Heart Rate</td><td>' + observationDetails.valueQuantity + '</td></tr>' +
+                '<tr><td>Observation Status</td><td>' + observationDetails.status + '</td></tr>' +
+                '<tr><td>Observation Last Updated</td><td>' + observationDetails.lastUpdated + '</td></tr>'
+              }
+              var intoleranceDetailsEl = ''
+              if (!!intoleranceDetails) {
+                intoleranceDetailsEl += '<tr><td>Alergy Intolerance Category</td><td>' + intoleranceDetails.category + '</td></tr>' +
+                '<tr><td>Reaction</td><td>' + intoleranceDetails.reaction + '</td></tr>' +
+                '<tr><td>Alergant</td><td>' + intoleranceDetails.text + '</td></tr>' +
+                '<tr><td>Intolerance Last Updated</td><td>' + intoleranceDetails.lastUpdated + '</td></tr>'
+              }
+
+              var html = '<div id="counter-container"><p>Consent is valid for: <span id="counter">02 Minutes 00 Seconds</span></p></div>' +
+                  '<a id="closePopup" class="close">×</a>'+
+                  '<div id="data-container"><h2>Data</h2>'+
+                    '<table id="summarytable" class="table table-bordered">'+
+                      '<tbody>'+
+                        patientDetailsEl +
+                        encounterDetailsEl +
+                        observationDetailsEl +
+                        intoleranceDetailsEl +
+                      '</tbody>'+
+                      '</table>'
+              $('.popup').html(html);
+              $('.popup').show();
+              var close = document.getElementById("closePopup");
+              close.onclick = function() {
+                $('.popup').hide();
+              };
+            }
+          },
+          complete: function(){
+            $('#spinner').hide();
+          }
+        });
+      });
+    });
+  </script>
+
+  <nav class="navbar navbar-default">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="{% url 'consent:index'%}">Home</a></li>
+      <li><a href="{% url 'consent:consentapproval'%}">Consent Approval</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>Welcome to Caregiver Portal</h1>
+  </div>
+
+  <div class="row">
+    <div class="alert alert-warning" role="alert">
+      <strong>Application Requests for Patient Data.</strong>
+      <br> <br>
+      <table border="1">
+        <thead>
+          <tr style="padding: 10px;">
+            <th>Role</th>
+            <th>Information accessible</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>clinical-admin</td>
+            <td>Personal Details, Allergy Intolerance Details, Encounter Details, Observation Details</td>
+          </tr>
+          <tr>
+            <td>internal-researcher</td>
+            <td>Personal Details, Allergy Intolerance Details</td>
+          </tr>
+          <tr>
+            <td>external-researcher</td>
+            <td>Allergy Intolerance Details, Encounter Details, Observation Details</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="popup1" class="overlay">
+    <div class="popup"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="nav nav-pills" style="margin-bottom: 10px;">
+            <li class="active">
+                <form id="consentform" action="{% url 'consent:index'%}" method="post">
+                    {% csrf_token %}
+                    <label for="userid">User ID: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <input type="text" id="userid" name="userid" value="{{userid}}"><br><br>
+                    <label for="roles">Your Role:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <select id="roles" name="roles">
+                        <option value="internal-researcher" {% if roles == "internal-researcher" %}selected="selected"{% endif %}>Internal Researcher</option>  
+                        <option value="external-researcher" {% if roles == "external-researcher" %}selected="selected"{% endif %}>External Researcher</option>
+                        <option value="clinical-admin" {% if roles == "clinical-admin" %}selected="selected"{% endif %}>Clinical Admin</option>
+                    </select><br><br>
+                    <button type="submit" name="checkConsent" id="checkConsent">Check Consent</button>
+                    <button type="submit" name="requestConsent" id="requestConsent" style="display: none;">Request Consent</button>
+                    <input type="reset" value="Clear" id="clearConsent" style="display: inline;">
+                    <input type="button" value="Back" id="backConsent" onclick="history.back()" style="display: none;">
+                </form> 
+            </li>
+          </ul>
+          {% if nomessage %}
+            <script>
+                revealButton();
+            </script>
+            <h3> {{ nomessage }}
+          {% elif message %}
+            <h3> {{ message }}
+          {% else %}
+            <br>
+            <div class="col-sm-5">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="btn-group" role="group" aria-label="...">
+                    <h3 class="panel-title">Summary</h3> 
+                    <div id='tabledata'>
+                      <table id="summarytable" class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Patient ID</th>
+                            <th>Requested Role</th>
+                            <th>Requested Timestamp</th>
+                            <th>Action</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for req in requests %}
+                          <tr>
+                              <td>{{ req.patientid }}</td>
+                              <td>{{ req.requestedrole }}</td>
+                              <td>{{ req.timestamp }}</td>
+                              <td>{% if req.status == "Approved" %}
+                                  <a class="popup-link" data-url="{% url 'consent:displaydata' req.id %}"><i class="glyphicon glyphicon-eye-open" ></i></a>
+                                  {% else %}
+                                  <i class="glyphicon glyphicon-eye-close" ></i>
+                                  {% endif %}</td>
+                              <td>{{ req.status }}</td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: none;" id="spinner"></div>
+
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+  <nav class="navbar navbar-default">
+    <ul class="nav navbar-nav">
+      <li><a href="{% url 'consent:index'%}">Home</a></li>
+      <li class="active"><a href="{% url 'consent:consentapproval'%}">Consent Approval</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>Welcome to Patient Portal</h1>
+  </div>
+
+  <div class="row">
+    <div class="alert alert-warning" role="alert">
+      <strong>Approve the consent for respective role(s).</strong>
+      <br><br>This will allow access to -<br><br>
+      <ol>
+        <li>Medical record numbers</li>
+        <li>Medical procedure undergone</li>
+        <li>Medical claims history</li>
+      </ol>
+      <table border="1">
+        <thead>
+          <tr style="padding: 10px;">
+            <th>Role</th>
+            <th>Information accessible</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>clinical-admin</td>
+            <td>Personal Details, Allergy Intolerance Details, Encounter Details, Observation Details</td>
+          </tr>
+          <tr>
+            <td>internal-researcher</td>
+            <td>Personal Details, Allergy Intolerance Details</td>
+          </tr>
+          <tr>
+            <td>external-researcher</td>
+            <td>Allergy Intolerance Details, Encounter Details, Observation Details</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="nav nav-pills" style="margin-bottom: 10px;">
+            <li class="active">
+              <form action="{% url 'consent:consentapproval'%}" method="post">
+                {% csrf_token %}
+                <div class="col-sm-12">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <div class="btn-group" role="group" aria-label="..." id="currentprojectname">
+                        <h3 class="panel-title">Summary </h3>
+                        <div id='tabledata'>
+                          <table id="summarytable" class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th>Patient ID</th>
+                                <th>Requested Role</th>
+                                <th>Requested Timestamp</th>
+                                <th>Action</th>
+                                <th>Status</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for req in requests %}
+                                <tr>
+                                  <td>{{ req.patientid }}</td>
+                                  <td>{{ req.requestedrole }}</td>
+                                  <td>{{ req.timestamp }}</td>
+                                  <td>{% if req.status == "Approved" %}
+                                    <a class="popup-link" data-url="{% url 'consent:displaydata' req.id %}"><i class="glyphicon glyphicon-eye-open" ></i></a>
+                                    {% elif req.status == "Rejected" %}
+                                    <button type="submit" value="{{ req.id }}" name="approve" class="btn" style="margin-right: 15px;"> <a>
+                                      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a></button>
+                                    {% else %}
+                                    <select id="ttl" name="ttl">
+                                      <option value="60s">1 Minute</option>  
+                                      <option value="120s">2 Minutes</option>
+                                      <option value="180s">3 Minutes</option>
+                                    </select>
+                                    <button type="submit" value="{{ req.id }}" name="approve" class="btn" style="margin-right: 15px;"> <a>
+                                      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a></button>
+                                      <button type="submit" value="{{ req.id }}" name="reject" class="btn" style="margin-right: 15px;"> <a>
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                      </button>
+                                    {% endif %}</td>
+                                  <td>{{ req.status }}</td>
+                                </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

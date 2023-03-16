@@ -1,0 +1,8 @@
+# Ignore local .env file
+.env
+
+# Ignore local .venv files
+.venv
+
+# Ignore local db.sqlite3 files
+db.sqlite3
