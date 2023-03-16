@@ -340,6 +340,7 @@ curl -X GET \
 CONSENT_STORE_NAME='projects/<PROJECT_ID>/locations/<LOCATION>/datasets/<FHIR_STORE_ID>/consentStores/<CONSENT_STORE_ID>'
 USER_CONSENT_ARTIFECT_ID='<CONSENT_ARTIFACT_ID>'
 HEALTHCARE_GCPAPI_BASE_URL='https://healthcare.googleapis.com/v1/'
+SECRET_KEY='<DJANGO_SECRET_KEY>'
 ```
 3. Run the Django web application `./manage.py runserver`
 

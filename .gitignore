@@ -4,5 +4,9 @@
 # Ignore local .venv files
 .venv
 
-# Ignore local db.sqlite3 files
+# Ignore local database files
 db.sqlite3
+
+# Ignore local compiled files & temp files
+.DS_Store
+*.pyc
