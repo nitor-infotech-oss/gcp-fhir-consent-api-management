@@ -3,6 +3,19 @@
 > This solution/accelerator helps in consuming GCP FHIR services in order to pull EHR data based on consent approval. This will provide an idea of how GCP and FHIR services can be integrated with any web app.
 
 
+# Table of contents
+* [Prerequisites](#prerequisites)
+  * [Concepts and How-to Links](#concepts-and-how-to-links)
+  * [Step by Step guide for GCP Healthcare API and FHIR resource setup](#step-by-step-guide-for-gcp-healthcare-api-and-fhir-resource-setup)
+* [Web Application Local Setup Guide](#web-application-local-setup-guide)
+  * [Running the application](#running-the-application)
+  * [Using the application](#using-the-application)
+
+
+# Prerequisites
+
+## Concepts and How-to Links
+
 #### Below are the prerequisites of Consent Management API that are needed in the entire Consent management setup
 - [Healthcare APIs that are enabled on GCP account](https://cloud.google.com/healthcare-api/docs)
 - [GCP user account login](https://cloud.google.com/sdk/gcloud/reference/init)
@@ -14,9 +27,18 @@
 - [Creating user data mappings](https://cloud.google.com/healthcare-api/docs/how-tos/consent-registering-user-data)
 - [Fetching the FHIR Store data](https://cloud.google.com/healthcare-api/docs/how-tos/fhir-resources)
 
+## Step by Step guide for GCP Healthcare API and FHIR resource setup
 
-### Step by Step guide for the entire GCP Consent and FHIR integration
-
+* [Step 1 Google Cloud Login](#step-1-google-cloud-login)
+* [Step 2 GCP Dataset Creation](#step-2-gcp-dataset-creation)
+* [Step 3 GCP FHIR Store Creation](#step-3-gcp-fhir-store-creation)
+* [Step 4 Loading FHIR resources into FHIR Data Store](#step-4-loading-fhir-resources-into-fhir-data-store)
+* [Step 5 GCP Consent Store Creation](#step-5-gcp-consent-store-creation)
+* [Step 6 Configure consent policies using RESOURCE and REQUEST attributes](#step-6-configure-consent-policies-using-resource-and-request-attributes)
+* [Step 7 Creating Consent Artifact](#step-7-creating-consent-artifact)
+* [Step 8 Creating the user data mappings](#step-8-creating-the-user-data-mappings)
+* [Step 9 Making Access Determinations](#step-9-making-access-determinations)
+* [Step 10 Fetching Data from FHIR Store](#step-10-fetching-data-from-fhir-store)
 
 ### Step 1 Google Cloud Login
 While using the local machine, we need to make sure that we are logged in to the GCP gcloud CLI with our user account by executing below auth login commands.
@@ -56,7 +78,7 @@ curl -X POST \
     "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores?fhirStoreId=FHIR_STORE_ID"
 ```
 
-#### Step 4 Loading FHIR resources into FHIR Data Store
+### Step 4 Loading FHIR resources into FHIR Data Store
 We can load multiple resources in the FHIR store as per the steps 
 below in which we have loaded the Patient, Encounter and Obervation data resources.
 - Patient Resource
@@ -182,7 +204,7 @@ curl -X POST \
     "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/consentStores?consentStoreId=CONSENT_STORE_ID"
 ```
 
-### Step 6 Configure consent policies using attributes (RESOURCE and REQUEST).
+### Step 6 Configure consent policies using RESOURCE and REQUEST attributes
 - RESOURCE attributes
 To create a RESOURCE attribute we need to send POST request using curl that creates attribute named data_identifiable with values identifiable and de-identified.
 ``` REST
@@ -325,7 +347,7 @@ curl -X GET \
 ```
 
 
-## Web application setup guide
+# Web Application Local Setup Guide
 
 1. Clone the repository and change the directory to the repository folder
 2. Create virtual environment `python -m venv .venv`
@@ -333,11 +355,10 @@ curl -X GET \
 4. Install dependencies `pip install -r requirements.txt`
 5. Run database migrations `./manage.py migrate`
 
-### Running the application locally
+## Running the application
 1. Activate virtual environment `source .venv/bin/activate`
 2. Setup .env file by refering example.env file. You can clone example.env to create .env file within cmapi directory.
 3. Run the Django web application `./manage.py runserver`
-
 
 ## Using the application
 
