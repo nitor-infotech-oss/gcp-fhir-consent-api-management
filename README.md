@@ -357,7 +357,7 @@ curl -X GET \
 
 ## Running the application
 1. Activate virtual environment `source .venv/bin/activate`
-2. Setup .env file by refering example.env file. You can clone example.env to create .env file within cmapi directory.
+2. Setup .env file by refering example.env file. You can clone example.env to create .env file within cmapi directory and then update it's content as per need.
 3. Run the Django web application `./manage.py runserver`
 
 ## Using the application
