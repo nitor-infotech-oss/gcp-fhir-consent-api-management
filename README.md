@@ -367,3 +367,9 @@ http://localhost:8000/
 
 #### Approve Consent Endpoint
 http://localhost:8000/consentapproval/
+
+#### Manage Resources Endpoint
+http://localhost:8000/manageresources/
+
+#### Capability Statement Endpoint
+http://localhost:8000/capabilitystatement/
