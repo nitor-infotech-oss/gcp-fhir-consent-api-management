@@ -52,7 +52,7 @@ def consentapproval(request):
         resp = create_consent(cr[0].patientid, cr[0].requestedrole, ttl)
         if resp.get('error'):
             message = resp.get('message', 'Something went wrong during consent creation, please try again')
-            return render(request, 'consentapproval.html', {'message': message})
+            return render(request, 'consentapproval.html', {'message': message, 'requests': cr})
 
         cr.update(consentid=resp.get('data', {}).get('consent_id', ''), status='Approved')
     elif request.method == 'POST' and 'reject' in request.POST:
