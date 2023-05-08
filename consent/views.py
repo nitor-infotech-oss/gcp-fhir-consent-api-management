@@ -1,7 +1,9 @@
-from django.shortcuts import render
-from consent.utils import create_consent, get_consent, get_data
-from .models import ConsentRequest
 from django.http import JsonResponse
+from django.shortcuts import render
+
+from consent.utils import create_consent, get_consent, get_data
+
+from .models import ConsentRequest
 
 
 def index(request):
