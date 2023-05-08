@@ -27,9 +27,9 @@ def index(request):
 
         resp = get_consent(cr[0].consentid)
         if resp.get('error'):
-            if resp.get('message', '') == 'Consent Expired':
-                cr.update(status='Expired')
             nomessage = resp.get('message', 'Something went wrong during checking consent')
+            if nomessage in ['Consent Expired', 'Consent not allowed without any expiry']:
+                cr.update(status='Expired')
             return render(request, 'index.html', {'nomessage': nomessage, 'userid': userid, 'roles': role})
 
         expireTime = resp.get('data', {}).get('expireTime')
@@ -47,7 +47,7 @@ def index(request):
 def consentapproval(request):
     if request.method == 'POST' and 'approve' in request.POST:
         requestid = request.POST.get('approve')
-        ttl = request.POST.get('ttl')
+        ttl = request.POST.get(requestid+'_ttl')
         cr = ConsentRequest.objects.filter(id=requestid)
         resp = create_consent(cr[0].patientid, cr[0].requestedrole, ttl)
         if resp.get('error'):
