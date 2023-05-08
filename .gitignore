@@ -10,3 +10,4 @@ db.sqlite3
 # Ignore local compiled files & temp files
 .DS_Store
 *.pyc
+.python-version
