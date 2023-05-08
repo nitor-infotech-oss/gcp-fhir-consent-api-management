@@ -39,10 +39,10 @@
       }
 
       var minutes = Math.floor(seconds / 60);
-      var remainingSeconds = seconds % 60;
+      var remainingSeconds = Math.ceil(seconds - minutes * 60);
 
       // Format the time remaining as mm:ss
-      var displayTime = (minutes < 10 ? "0" : "") + minutes + " Minutes  " + (remainingSeconds < 10 ? "0" : "") + remainingSeconds.toFixed(0) + " Seconds";
+      var displayTime = (minutes < 10 ? "0" : "") + minutes + " Minutes  " + (remainingSeconds < 10 ? "0" : "") + remainingSeconds.toString() + " Seconds";
 
       document.getElementById("counter").innerHTML = displayTime;
 
