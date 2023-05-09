@@ -29,8 +29,9 @@
       hiddenButton2.style.display = "inline";
     }
 
-    var seconds = 120;
-    var timer = setInterval(function() {
+    var seconds = 0;
+    var timer;
+    function countDown() {
       if (seconds <= 0) {
         clearInterval(timer);
         document.getElementById("data-container").innerHTML = "<p>The consent approval has expired!<br>Please request for the consent, if required.</p>";
@@ -38,15 +39,15 @@
       }
 
       var minutes = Math.floor(seconds / 60);
-      var remainingSeconds = seconds % 60;
+      var remainingSeconds = Math.ceil(seconds - minutes * 60);
 
       // Format the time remaining as mm:ss
-      var displayTime = (minutes < 10 ? "0" : "") + minutes + " Minutes  " + (remainingSeconds < 10 ? "0" : "") + remainingSeconds.toFixed(0) + " Seconds";
+      var displayTime = (minutes < 10 ? "0" : "") + minutes + " Minutes  " + (remainingSeconds < 10 ? "0" : "") + remainingSeconds.toString() + " Seconds";
 
       document.getElementById("counter").innerHTML = displayTime;
 
       seconds--;
-    }, 1000);
+    }
   
     $(function() {
       $('.popup-link').click(function(e) {
@@ -63,16 +64,19 @@
               const resourceData = resources.data;
               const consentData = resourceData.consent_data;
               const patientData = resourceData.patient_data;
-              console.log(consentData);
-              console.log(patientData);
+              // console.log(consentData);
+              // console.log(patientData);
+              clearInterval(timer);
               // Set consent expire timer
               var now = new Date();
-              expireTime = new Date(consentData.expireTime);
+              var expireTime = new Date(consentData.expireTime);
               if (now >= expireTime) {
                 seconds = 0
               } else {
                 seconds = (expireTime.getTime() - now.getTime())/1000
               }
+              // Re-enable timer
+              timer = setInterval(countDown, 1000);
               // Extract details
               let patientDetails;
               let encounterDetails;
@@ -80,7 +84,7 @@
               let intoleranceDetails;
               for (const entry of patientData){
                 let resource = entry.resource;
-                console.log(resource);
+                // console.log(resource);
                 // Patient details
                 if (resource.resourceType == "Patient") {
                   patientDetails = {
@@ -142,7 +146,7 @@
                 '<tr><td>Intolerance Last Updated</td><td>' + intoleranceDetails.lastUpdated + '</td></tr>'
               }
 
-              var html = '<div id="counter-container"><p>Consent is valid for: <span id="counter">02 Minutes 00 Seconds</span></p></div>' +
+              var html = '<div id="counter-container"><p>Consent is valid for: <span id="counter"> - </span></p></div>' +
                   '<a id="closePopup" class="close">×</a>'+
                   '<div id="data-container"><h2>Data</h2>'+
                     '<table id="summarytable" class="table table-bordered">'+

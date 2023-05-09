@@ -86,16 +86,18 @@
                                   <td>{% if req.status == "Approved" %}
                                     <a class="popup-link" data-url="{% url 'consent:displaydata' req.id %}"><i class="glyphicon glyphicon-eye-open" ></i></a>
                                     {% elif req.status == "Rejected" %}
-                                    <button type="submit" value="{{ req.id }}" name="approve" class="btn" style="margin-right: 15px;"> <a>
-                                      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a></button>
+                                      <button type="submit" value="{{ req.id }}" name="approve" class="btn" style="margin-right: 15px;"> <a>
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                      </button>
                                     {% else %}
-                                    <select id="ttl" name="ttl">
-                                      <option value="60s">1 Minute</option>  
-                                      <option value="120s">2 Minutes</option>
-                                      <option value="180s">3 Minutes</option>
-                                    </select>
-                                    <button type="submit" value="{{ req.id }}" name="approve" class="btn" style="margin-right: 15px;"> <a>
-                                      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a></button>
+                                      <select id="ttl" name="{{ req.id }}_ttl">
+                                        <option value="60s">1 Minute</option>
+                                        <option value="120s">2 Minutes</option>
+                                        <option value="180s">3 Minutes</option>
+                                      </select>
+                                      <button type="submit" value="{{ req.id }}" name="approve" class="btn" style="margin-right: 15px;"> <a>
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                      </button>
                                       <button type="submit" value="{{ req.id }}" name="reject" class="btn" style="margin-right: 15px;"> <a>
                                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                       </button>

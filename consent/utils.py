@@ -1,10 +1,10 @@
 import json
-from datetime import datetime
-from requests import request
-import subprocess
-from django.conf import settings
 import logging
+import subprocess
+from datetime import datetime
 
+from django.conf import settings
+from requests import request
 
 log = logging.getLogger(__name__)
 
@@ -94,6 +94,11 @@ def get_consent(consent_id):
     log.debug(r_json)
 
     if r.status_code == 200:
+        if not r_json.get('expireTime'):
+            # This is to enforce rule - Always have consent with expiry
+            response['error'] = True
+            response['message'] = 'Consent not allowed without any expiry'
+            return response
         expireTime = datetime.strptime(r_json.get('expireTime')[:-4], '%Y-%m-%dT%H:%M:%S.%f')
         if datetime.now() >= expireTime:
             response['error'] = True
