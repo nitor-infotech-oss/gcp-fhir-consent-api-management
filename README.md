@@ -92,7 +92,7 @@ curl -X POST \
 
 We can load multiple resources in the FHIR store as per the steps 
 below in which we have loaded the Patient, Encounter and Obervation data resources.
-  &emsp;<details><summary>Patient Resource</summary>
+  <details><summary>Patient Resource</summary>
 
   Save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory:
   ```bash
@@ -122,7 +122,7 @@ below in which we have loaded the Patient, Encounter and Obervation data resourc
       "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores/FHIR_STORE_ID/fhir/Patient"
   ```
   </details>
-  &emsp;<details><summary>Encounter Resource</summary>
+  <details><summary>Encounter Resource</summary>
 
   Save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory:
   ```bash
@@ -155,7 +155,7 @@ below in which we have loaded the Patient, Encounter and Obervation data resourc
       "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores/FHIR_STORE_ID/fhir/Encounter"
   ```
   </details>
-  &emsp;<details><summary>Observation Resource</summary>
+  <details><summary>Observation Resource</summary>
 
   Save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory:
   ```bash
@@ -202,15 +202,9 @@ below in which we have loaded the Patient, Encounter and Obervation data resourc
   ```
   </details>
 </details>
-* [Step 5 GCP Consent Store Creation](#step-5-gcp-consent-store-creation)
-* [Step 6 Configure consent policies using RESOURCE and REQUEST attributes](#step-6-configure-consent-policies-using-resource-and-request-attributes)
-* [Step 7 Creating Consent Artifact](#step-7-creating-consent-artifact)
-* [Step 8 Creating the user data mappings](#step-8-creating-the-user-data-mappings)
-* [Step 9 Making Access Determinations](#step-9-making-access-determinations)
-* [Step 10 Fetching Data from FHIR Store](#step-10-fetching-data-from-fhir-store)
 
+<details><summary>Step 5 GCP Consent Store Creation</summary>
 
-### Step 5 GCP Consent Store Creation
 We need to save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory.
 ```bash
 cat > request.json << 'EOF'
@@ -228,9 +222,12 @@ curl -X POST \
     -d @request.json \
     "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/consentStores?consentStoreId=CONSENT_STORE_ID"
 ```
+</details>
 
-### Step 6 Configure consent policies using RESOURCE and REQUEST attributes
-- RESOURCE attributes
+<details><summary>Step 6 Configure consent policies using RESOURCE and REQUEST attributes</summary>
+
+<details><summary>RESOURCE attributes</summary>
+
 To create a RESOURCE attribute we need to send POST request using curl that creates attribute named data_identifiable with values identifiable and de-identified.
 ``` REST
 curl -X POST \
@@ -246,7 +243,9 @@ curl -X POST \
     }" \
 "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/consentStores/CONSENT_STORE_ID/attributeDefinitions?attribute_definition_id=data_identifiable"
 ```
-- REQUEST attributes
+</details>
+<details><summary>REQUEST attributes</summary>
+
 We need to send a POST request using curl that creates a REQUEST attribute named requester_identity:
 ``` REST
 curl -X POST \
@@ -259,8 +258,11 @@ curl -X POST \
     }" \
 "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/consentStores/CONSENT_STORE_ID/attributeDefinitions?attribute_definition_id=requester_identity"
 ```
+</details>
+</details>
 
-### Step 7 Creating Consent Artifact
+<details><summary>Step 7 Creating Consent Artifact</summary>
+
 We can create consent artifacts using the following REST command on replacing with our values.
 ``` REST
 curl -X POST \
@@ -282,8 +284,10 @@ curl -X POST \
     }" \
 "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/consentStores/CONSENT_STORE_ID/consentArtifacts"
 ```
+</details>
 
-### Step 8 Creating a Consent 
+<details><summary>Step 8 Creating a Consent</summary>
+
 We can create a consent using the following REST command on replacing with our values.
 ``` REST
 curl -X POST \
@@ -314,8 +318,9 @@ curl -X POST \
     }" \
 "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/consentStores/CONSENT_STORE_ID/consents"
 ```
+</details>
 
-### Step 8 Creating the user data mappings 
+<details><summary>Step 9 Creating the user data mappings</summary>
 We can define data mappings using the following REST command on replacing with our values to register data with the Consent Management API and connected to consents.
 ```REST
 curl -X POST \
@@ -335,8 +340,10 @@ Here 'DATA_ID' will be the data that the user data mapping resource refers e,g f
 ```bash
   'data_id' : 'https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores/FHIR_STORE_ID/fhir/Patient/PATIENT_ID'
 ```
+</details>
 
-### Step 9 Making Access Determinations
+<details><summary>Step 10 Making Access Determinations</summary>
+
 Under this our application can request access determinations from the Consent Management API for a specific data element, for all data elements associated with a user, or for whole data store by using following REST command.
 ```REST
 curl -X POST \
@@ -355,8 +362,10 @@ curl -X POST \
     }" \
 "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/consentStores/CONSENT_STORE_ID:checkDataAccess"
 ```
+</details>
 
-### Step 10 Fetching Data from FHIR Store
+<details><summary>Step 11 Fetching Data from FHIR Store</summary>
+
  We can get the contents of a particular FHIR resource using below REST API by replacing with our values.
 - RESOURCE level like Patient, Encounter, Observation etc
 ```REST
@@ -370,11 +379,18 @@ curl -X GET \
      -H "Authorization: Bearer $(gcloud auth application-default print-access-token)" \
      "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores/FHIR_STORE_ID/fhir/Patient/PATIENT_ID/\$everything"
 ```
+</details>
 
 
 ## Concepts and How-to Links for conformance
 
-#### Below are the prerequisites of Confromance that are needed in the entire setup
+<details>
+  <summary>Below are the prerequisites of Confromance that are needed in the entire setup</summary>
+
+  [Details here]
+</details>
+
+## Step by Step guide for conformance implementation on FHIR server
 
 
 # Web Application Local Setup Guide
