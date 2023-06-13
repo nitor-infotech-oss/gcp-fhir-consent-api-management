@@ -68,17 +68,8 @@ curl -X POST \
 ```
 </details>
 
-* [Step 3 GCP FHIR Store Creation](#step-3-gcp-fhir-store-creation)
-* [Step 4 Loading FHIR resources into FHIR Data Store](#step-4-loading-fhir-resources-into-fhir-data-store)
-* [Step 5 GCP Consent Store Creation](#step-5-gcp-consent-store-creation)
-* [Step 6 Configure consent policies using RESOURCE and REQUEST attributes](#step-6-configure-consent-policies-using-resource-and-request-attributes)
-* [Step 7 Creating Consent Artifact](#step-7-creating-consent-artifact)
-* [Step 8 Creating the user data mappings](#step-8-creating-the-user-data-mappings)
-* [Step 9 Making Access Determinations](#step-9-making-access-determinations)
-* [Step 10 Fetching Data from FHIR Store](#step-10-fetching-data-from-fhir-store)
+<details><summary>Step 3 GCP FHIR Store Creation</summary>
 
-
-### Step 3 GCP FHIR Store Creation
 We need to save the request body in a file called request.json having the store version e.g R4. Run the following command in the terminal to create or overwrite this file in the current directory.
 ```bash
 cat > request.json << 'EOF'
@@ -95,113 +86,129 @@ curl -X POST \
     -d @request.json \
     "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores?fhirStoreId=FHIR_STORE_ID"
 ```
+</details>
 
-### Step 4 Loading FHIR resources into FHIR Data Store
+<details><summary>Step 4 Loading FHIR resources into FHIR Data Store</summary>
+
 We can load multiple resources in the FHIR store as per the steps 
 below in which we have loaded the Patient, Encounter and Obervation data resources.
-- Patient Resource
-Save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory:
-```bash
-cat > request.json << 'EOF'
-{
-  "name": [
-    {
-      "use": "official",
-      "family": "Smith",
-      "given": [
-        "Darcy"
-      ]
-    }
-  ],
-  "gender": "female",
-  "birthDate": "1970-01-01",
-  "resourceType": "Patient"
-}
-EOF
-```
-Then execute the following command to send our REST request for loading patient resource into FHIR store.
-``` REST
-curl -X POST \
-    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-    -H "Content-Type: application/fhir+json" \
-    -d @request.json \
-    "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores/FHIR_STORE_ID/fhir/Patient"
-```
-- Encounter Resource
-Save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory:
-```bash
-cat > request.json << 'EOF'
-{
-  "status": "finished",
-  "class": {
-    "system": "http://hl7.org/fhir/v3/ActCode",
-    "code": "IMP",
-    "display": "inpatient encounter"
-  },
-  "reasonCode": [
-    {
-      "text": "The patient had an abnormal heart rate. She was concerned about this."
-    }
-  ],
-  "subject": {
-    "reference": "Patient/PATIENT_ID"
-  },
-  "resourceType": "Encounter"
-}
-EOF
-```
-Then execute the following command to send our REST request for loading patient resource into FHIR store.
-``` REST
-curl -X POST \
-    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-    -H "Content-Type: application/fhir+json" \
-    -d @request.json \
-    "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores/FHIR_STORE_ID/fhir/Encounter"
-```
-- Observation Resource
-Save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory:
-```bash
-cat > request.json << 'EOF'
-{
-  "resourceType": "Observation",
-  "status": "final",
-  "subject": {
-    "reference": "Patient/PATIENT_ID"
-  },
-  "effectiveDateTime": "2020-01-01T00:00:00+00:00",
-  "identifier": [
-    {
-      "system": "my-code-system",
-      "value": "ABC-12345"
-    }
-  ],
-  "code": {
-    "coding": [
+  <details><summary>- Patient Resource</summary>
+
+  Save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory:
+  ```bash
+  cat > request.json << 'EOF'
+  {
+    "name": [
       {
-        "system": "http://loinc.org",
-        "code": "8867-4",
-        "display": "Heart rate"
+        "use": "official",
+        "family": "Smith",
+        "given": [
+          "Darcy"
+        ]
       }
-    ]
-  },
-  "valueQuantity": {
-    "value": 80,
-    "unit": "bpm"
-  },
-  "encounter": {
-    "reference": "Encounter/ENCOUNTER_ID"
+    ],
+    "gender": "female",
+    "birthDate": "1970-01-01",
+    "resourceType": "Patient"
   }
-}
-EOF
-```
-Then execute the following command to send our REST request for loading patient resource into FHIR store.
-``` REST
-curl -X POST \
-    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-    -H "Content-Type: application/fhir+json" \
-    -d @request.json \
-    "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores/FHIR_STORE_ID/fhir/Observation"
-```
+  EOF
+  ```
+  Then execute the following command to send our REST request for loading patient resource into FHIR store.
+  ``` REST
+  curl -X POST \
+      -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+      -H "Content-Type: application/fhir+json" \
+      -d @request.json \
+      "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores/FHIR_STORE_ID/fhir/Patient"
+  ```
+  </details>
+  <details><summary>- Encounter Resource</summary>
+
+  Save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory:
+  ```bash
+  cat > request.json << 'EOF'
+  {
+    "status": "finished",
+    "class": {
+      "system": "http://hl7.org/fhir/v3/ActCode",
+      "code": "IMP",
+      "display": "inpatient encounter"
+    },
+    "reasonCode": [
+      {
+        "text": "The patient had an abnormal heart rate. She was concerned about this."
+      }
+    ],
+    "subject": {
+      "reference": "Patient/PATIENT_ID"
+    },
+    "resourceType": "Encounter"
+  }
+  EOF
+  ```
+  Then execute the following command to send our REST request for loading patient resource into FHIR store.
+  ``` REST
+  curl -X POST \
+      -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+      -H "Content-Type: application/fhir+json" \
+      -d @request.json \
+      "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores/FHIR_STORE_ID/fhir/Encounter"
+  ```
+  </details>
+  <details><summary>- Observation Resource</summary>
+
+  Save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory:
+  ```bash
+  cat > request.json << 'EOF'
+  {
+    "resourceType": "Observation",
+    "status": "final",
+    "subject": {
+      "reference": "Patient/PATIENT_ID"
+    },
+    "effectiveDateTime": "2020-01-01T00:00:00+00:00",
+    "identifier": [
+      {
+        "system": "my-code-system",
+        "value": "ABC-12345"
+      }
+    ],
+    "code": {
+      "coding": [
+        {
+          "system": "http://loinc.org",
+          "code": "8867-4",
+          "display": "Heart rate"
+        }
+      ]
+    },
+    "valueQuantity": {
+      "value": 80,
+      "unit": "bpm"
+    },
+    "encounter": {
+      "reference": "Encounter/ENCOUNTER_ID"
+    }
+  }
+  EOF
+  ```
+  Then execute the following command to send our REST request for loading patient resource into FHIR store.
+  ``` REST
+  curl -X POST \
+      -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+      -H "Content-Type: application/fhir+json" \
+      -d @request.json \
+      "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores/FHIR_STORE_ID/fhir/Observation"
+  ```
+  </details>
+</details>
+* [Step 5 GCP Consent Store Creation](#step-5-gcp-consent-store-creation)
+* [Step 6 Configure consent policies using RESOURCE and REQUEST attributes](#step-6-configure-consent-policies-using-resource-and-request-attributes)
+* [Step 7 Creating Consent Artifact](#step-7-creating-consent-artifact)
+* [Step 8 Creating the user data mappings](#step-8-creating-the-user-data-mappings)
+* [Step 9 Making Access Determinations](#step-9-making-access-determinations)
+* [Step 10 Fetching Data from FHIR Store](#step-10-fetching-data-from-fhir-store)
+
 
 ### Step 5 GCP Consent Store Creation
 We need to save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory.
