@@ -44,7 +44,7 @@
 
 ## Step by Step guide for GCP Healthcare API and FHIR resource setup
 
-<details><summary>Step 1 Google Cloud Login</summary><blockquote>
+<details><summary>Step 1 Google Cloud Login</summary>
 While using the local machine, we need to make sure that we are logged in to the GCP gcloud CLI with our user account by executing below auth login commands.
 ```bash
  gcloud init
@@ -53,9 +53,19 @@ OR
 ```bash
 gcloud auth login
 ```
-</blockquote></details>
+</details>
 
-* [Step 2 GCP Dataset Creation](#step-2-gcp-dataset-creation)
+<details><summary>Step 2 GCP Dataset Creation</summary>
+Before we can create a FHIR store, we need to create a dataset which we can using the following REST command by replacing capital letter words with our project specific values.
+``` REST
+curl -X POST \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "Content-Type: application/json; charset=utf-8" \
+    -d "" \
+    "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets?datasetId=DATASET_ID"
+```
+</details>
+
 * [Step 3 GCP FHIR Store Creation](#step-3-gcp-fhir-store-creation)
 * [Step 4 Loading FHIR resources into FHIR Data Store](#step-4-loading-fhir-resources-into-fhir-data-store)
 * [Step 5 GCP Consent Store Creation](#step-5-gcp-consent-store-creation)
@@ -65,16 +75,6 @@ gcloud auth login
 * [Step 9 Making Access Determinations](#step-9-making-access-determinations)
 * [Step 10 Fetching Data from FHIR Store](#step-10-fetching-data-from-fhir-store)
 
-
-### Step 2 GCP Dataset Creation
-Before we can create a FHIR store, we need to create a dataset which we can using the following REST command by replacing capital letter words with our project specific values.
-``` REST
-curl -X POST \
-    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-    -H "Content-Type: application/json; charset=utf-8" \
-    -d "" \
-    "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets?datasetId=DATASET_ID"
-```
 
 ### Step 3 GCP FHIR Store Creation
 We need to save the request body in a file called request.json having the store version e.g R4. Run the following command in the terminal to create or overwrite this file in the current directory.
