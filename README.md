@@ -1,14 +1,14 @@
-# GCP FHIR Consent Management & Conformance Implementation - Accelerator
-
-> This solution/accelerator helps in consuming GCP FHIR services in order to pull EHR data based on consent approval. This will provide an idea of how GCP and FHIR services can be integrated with any web app.
-
-### Tech Stacks
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
 ![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray)
 ![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
+
+# GCP FHIR Consent Management & Conformance Implementation - Accelerator
+
+> This solution/accelerator helps in consuming GCP FHIR services in order to pull EHR data based on consent approval. This will provide an idea of how GCP and FHIR services can be integrated with any web app.
+
 
 # Table of contents
 * [Prerequisites](#prerequisites)
@@ -30,7 +30,6 @@
 <details>
   <summary>Below are the prerequisites of Consent Management API that are needed in the entire Consent management setup</summary>
 
-  #### Below are the prerequisites of Consent Management API that are needed in the entire Consent management setup
 - [Healthcare APIs that are enabled on GCP account](https://cloud.google.com/healthcare-api/docs)
 - [GCP user account login](https://cloud.google.com/sdk/gcloud/reference/init)
 - [Dataset, Fhir Store creation](https://cloud.google.com/healthcare-api/docs/how-tos/fhir#curl)
