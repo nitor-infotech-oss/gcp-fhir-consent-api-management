@@ -45,6 +45,19 @@
 ## Step by Step guide for GCP Healthcare API and FHIR resource setup
 
 * [Step 1 Google Cloud Login](#step-1-google-cloud-login)
+* <details>
+  <summary>Step 1 Google Cloud Login</summary>
+
+While using the local machine, we need to make sure that we are logged in to the GCP gcloud CLI with our user account by executing below auth login commands.
+```bash
+ gcloud init
+```
+OR
+```bash
+gcloud auth login
+```
+
+</details>
 * [Step 2 GCP Dataset Creation](#step-2-gcp-dataset-creation)
 * [Step 3 GCP FHIR Store Creation](#step-3-gcp-fhir-store-creation)
 * [Step 4 Loading FHIR resources into FHIR Data Store](#step-4-loading-fhir-resources-into-fhir-data-store)
@@ -55,9 +68,7 @@
 * [Step 9 Making Access Determinations](#step-9-making-access-determinations)
 * [Step 10 Fetching Data from FHIR Store](#step-10-fetching-data-from-fhir-store)
 
-<details>
-  <summary>### Step 1 Google Cloud Login</summary>
-
+### Step 1 Google Cloud Login
 While using the local machine, we need to make sure that we are logged in to the GCP gcloud CLI with our user account by executing below auth login commands.
 ```bash
  gcloud init 
@@ -66,8 +77,6 @@ OR
 ```bash
 gcloud auth login
 ```
-
-</details>
 
 ### Step 2 GCP Dataset Creation
 Before we can create a FHIR store, we need to create a dataset which we can using the following REST command by replacing capital letter words with our project specific values.
