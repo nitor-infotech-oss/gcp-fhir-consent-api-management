@@ -92,7 +92,7 @@ curl -X POST \
 
 We can load multiple resources in the FHIR store as per the steps 
 below in which we have loaded the Patient, Encounter and Obervation data resources.
-  <details><summary>- Patient Resource</summary>
+  &emsp;<details><summary>Patient Resource</summary>
 
   Save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory:
   ```bash
@@ -122,7 +122,7 @@ below in which we have loaded the Patient, Encounter and Obervation data resourc
       "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores/FHIR_STORE_ID/fhir/Patient"
   ```
   </details>
-  <details><summary>- Encounter Resource</summary>
+  &emsp;<details><summary>Encounter Resource</summary>
 
   Save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory:
   ```bash
@@ -155,7 +155,7 @@ below in which we have loaded the Patient, Encounter and Obervation data resourc
       "https://healthcare.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/datasets/DATASET_ID/fhirStores/FHIR_STORE_ID/fhir/Encounter"
   ```
   </details>
-  <details><summary>- Observation Resource</summary>
+  &emsp;<details><summary>Observation Resource</summary>
 
   Save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory:
   ```bash
