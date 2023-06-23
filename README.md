@@ -10,6 +10,8 @@
 > This solution/accelerator helps in consuming GCP FHIR services in order to pull EHR data based on consent approval. This will provide an idea of how GCP and FHIR services can be integrated with any web app.
 
 
+<br/>
+
 # Table of contents
 * [Prerequisites](#prerequisites)
   * Consent Management:
@@ -22,6 +24,8 @@
   * [Running the application](#running-the-application)
   * [Using the application](#using-the-application)
 
+
+<br/>
 
 # Prerequisites
 
@@ -41,9 +45,12 @@
 
 </details>
 
+
+<br/>
+
 ## Step by Step guide for GCP Healthcare API and FHIR resource setup
 
-<details><summary>Step 1 Google Cloud Login</summary>
+<details><summary>Step 1: Google Cloud Login</summary>
 
 While using the local machine, we need to make sure that we are logged in to the GCP gcloud CLI with our user account by executing below auth login commands.
 ```bash
@@ -55,7 +62,7 @@ gcloud auth login
 ```
 </details>
 
-<details><summary>Step 2 GCP Dataset Creation</summary>
+<details><summary>Step 2: GCP Dataset Creation</summary>
 
 Before we can create a FHIR store, we need to create a dataset which we can using the following REST command by replacing capital letter words with our project specific values.
 ``` REST
@@ -67,7 +74,7 @@ curl -X POST \
 ```
 </details>
 
-<details><summary>Step 3 GCP FHIR Store Creation</summary>
+<details><summary>Step 3: GCP FHIR Store Creation</summary>
 
 We need to save the request body in a file called request.json having the store version e.g R4. Run the following command in the terminal to create or overwrite this file in the current directory.
 ```bash
@@ -87,7 +94,7 @@ curl -X POST \
 ```
 </details>
 
-<details><summary>Step 4 Loading FHIR resources into FHIR Data Store</summary>
+<details><summary>Step 4: Loading FHIR resources into FHIR Data Store</summary>
 
 We can load multiple resources in the FHIR store as per the steps 
 below in which we have loaded the Patient, Encounter and Obervation data resources.
@@ -196,7 +203,7 @@ below in which we have loaded the Patient, Encounter and Obervation data resourc
   ```
 </details>
 
-<details><summary>Step 5 GCP Consent Store Creation</summary>
+<details><summary>Step 5: GCP Consent Store Creation</summary>
 
 We need to save the request body in a file called request.json. Run the following command in the terminal to create or overwrite this file in the current directory.
 ```bash
@@ -217,7 +224,7 @@ curl -X POST \
 ```
 </details>
 
-<details><summary>Step 6 Configure consent policies using RESOURCE and REQUEST attributes</summary>
+<details><summary>Step 6: Configure consent policies using RESOURCE and REQUEST attributes</summary>
 
 - RESOURCE attributes
 To create a RESOURCE attribute we need to send POST request using curl that creates attribute named data_identifiable with values identifiable and de-identified.
@@ -250,7 +257,7 @@ curl -X POST \
 ```
 </details>
 
-<details><summary>Step 7 Creating Consent Artifact</summary>
+<details><summary>Step 7: Creating Consent Artifact</summary>
 
 We can create consent artifacts using the following REST command on replacing with our values.
 ``` REST
@@ -275,7 +282,7 @@ curl -X POST \
 ```
 </details>
 
-<details><summary>Step 8 Creating a Consent</summary>
+<details><summary>Step 8: Creating a Consent</summary>
 
 We can create a consent using the following REST command on replacing with our values.
 ``` REST
@@ -309,7 +316,7 @@ curl -X POST \
 ```
 </details>
 
-<details><summary>Step 9 Creating the user data mappings</summary>
+<details><summary>Step 9: Creating the user data mappings</summary>
 
 We can define data mappings using the following REST command on replacing with our values to register data with the Consent Management API and connected to consents.
 ```REST
@@ -332,7 +339,7 @@ Here 'DATA_ID' will be the data that the user data mapping resource refers e,g f
 ```
 </details>
 
-<details><summary>Step 10 Making Access Determinations</summary>
+<details><summary>Step 10: Making Access Determinations</summary>
 
 Under this our application can request access determinations from the Consent Management API for a specific data element, for all data elements associated with a user, or for whole data store by using following REST command.
 ```REST
@@ -354,7 +361,7 @@ curl -X POST \
 ```
 </details>
 
-<details><summary>Step 11 Fetching Data from FHIR Store</summary>
+<details><summary>Step 11: Fetching Data from FHIR Store</summary>
 
  We can get the contents of a particular FHIR resource using below REST API by replacing with our values.
 - RESOURCE level like Patient, Encounter, Observation etc
@@ -372,16 +379,38 @@ curl -X GET \
 </details>
 
 
+<br/>
+
 ## Concepts and How-to Links for conformance
 
 <details>
   <summary>Below are the prerequisites of Confromance that are needed in the entire setup</summary>
 
-  [Details here]
+- [Configure FHIR profiles](https://cloud.google.com/healthcare-api/docs/how-tos/fhir-profiles)
+
 </details>
 
-## Step by Step guide for conformance implementation on FHIR server
 
+<br/>
+
+## Step by Step guide for conformance setup on FHIR server
+
+<details>
+  <summary>Step 1: Defining FHIR profile</summary>
+
+Refer detailed steps [here](https://cloud.google.com/healthcare-api/docs/how-tos/fhir-profiles#define_your_fhir_profiles) to define your profiles that involves downloading/configuring predefined structure definition, implementation guide and value sets and finally uploading & enabling the updated implementation guide for your FHIR store.
+
+</details>
+
+<details>
+  <summary>Step 2: Validating resources against profile</summary>
+
+Refer detailed steps [here](https://cloud.google.com/healthcare-api/docs/how-tos/fhir-profiles#validate_resources_against_specific_profiles) to to validate a FHIR resource for a specific profile or for all profiles defined for a FHIR store.
+
+</details>
+
+
+<br/>
 
 # Web Application Local Setup Guide
 
