@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+  <nav class="navbar navbar-default">
+    <ul class="nav navbar-nav">
+      <li><a href="{% url 'consent:index'%}">Home</a></li>
+      <li><a href="{% url 'consent:consentapproval'%}">Consent Approval</a></li>
+      <li class="active"><a href="{% url 'consent:manageresources'%}">Manage Resources</a></li>
+      <li><a href="{% url 'consent:capabilitystatement'%}">Capability Statement</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>Welcome to Resource Manager Portal</h1>
+  </div>
+
+  <div class="row">
+    <div class="alert alert-warning" role="alert">
+      <strong>Upload resources that conform with the profile(s) in the implementation guide.</strong>
+      <br><br>This portal will not allow to upload resources that don't conform to the profile(s) in the implementation guide. Refer below table for the valid structure definition(s).<br><br>
+      <table border="1">
+        <thead>
+          <tr style="padding: 10px;">
+            <th>Resource Type</th>
+            <th>Structure Definition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Patient</td>
+            <td>http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient|5.0.1</td>
+          </tr>
+          <tr>
+            <td>...</td>
+            <td>...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {% if message %}
+    <h4> {{ message }} </h4>
+  {% endif %}
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="nav nav-pills" style="margin-bottom: 10px;">
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <label for="json_file">Choose a JSON file to upload:</label>
+              <input type="file" name="json_file" id="json_file">
+              <br><br>
+              <input type="submit" value="Upload">
+            </form>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
