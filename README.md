@@ -405,7 +405,7 @@ Refer detailed steps [here](https://cloud.google.com/healthcare-api/docs/how-tos
 <details>
   <summary>Step 2: Validating resources against profile</summary>
 
-Refer detailed steps [here](https://cloud.google.com/healthcare-api/docs/how-tos/fhir-profiles#validate_resources_against_specific_profiles) to to validate a FHIR resource for a specific profile or for all profiles defined for a FHIR store.
+Refer detailed steps [here](https://cloud.google.com/healthcare-api/docs/how-tos/fhir-profiles#validate_resources_against_specific_profiles) to validate a FHIR resource for a specific profile or for all profiles defined for your FHIR store.
 
 </details>
 
