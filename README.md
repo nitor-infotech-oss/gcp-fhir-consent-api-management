@@ -19,7 +19,7 @@
     * [Step by Step guide for GCP Healthcare API and FHIR resource setup](#step-by-step-guide-for-gcp-healthcare-api-and-fhir-resource-setup)
   * Conformance Implementation:
     * [Concepts and How-to Links for conformance](#concepts-and-how-to-links-for-conformance)
-    * [Step by Step guide for conformance implementation on FHIR server](#step-by-step-guide-for-conformance-implementation-on-fhir-server)
+    * [Step by Step guide for conformance setup on FHIR server](#step-by-step-guide-for-conformance-setup-on-fhir-server)
 * [Web Application Local Setup Guide](#web-application-local-setup-guide)
   * [Running the application](#running-the-application)
   * [Using the application](#using-the-application)
