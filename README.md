@@ -7,7 +7,7 @@
 
 # GCP FHIR Consent Management & Conformance Implementation - Accelerator
 
-> This solution/accelerator helps in consuming GCP FHIR services in order to pull EHR data based on consent approval. This will provide an idea of how GCP and FHIR services can be integrated with any web app.
+> This solution/accelerator helps in consuming GCP FHIR services in order to pull EHR data based on consent approval. Also, it includes option to push EHR data to FHIR store that gets validated against the conformance setup on FHIR store. This will provide an idea of how GCP and FHIR services can be integrated with any web app.
 
 
 <br/>
