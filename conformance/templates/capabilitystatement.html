@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block capabilitystatement_active %}active{% endblock %}
+
 {% block body %}
   <script>
     $(function() {
@@ -7,15 +9,6 @@
       document.getElementById("data-container").innerHTML = JSON.stringify(djangoData, null, 4);
     });
   </script>
-
-  <nav class="navbar navbar-default">
-    <ul class="nav navbar-nav">
-      <li><a href="{% url 'consent:index'%}">Home</a></li>
-      <li><a href="{% url 'consent:consentapproval'%}">Consent Approval</a></li>
-      <li><a href="{% url 'consent:manageresources'%}">Manage Resources</a></li>
-      <li class="active"><a href="{% url 'consent:capabilitystatement'%}">Capability Statement</a></li>
-    </ul>
-  </nav>
 
   <div class="page-header">
     <h1>Capability/Conformance Statement</h1>
